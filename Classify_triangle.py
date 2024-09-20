@@ -1,37 +1,36 @@
-#Abhishek
-def classify_triangle(a, b, c):
+def classify_triangle(side1, side2, side3):
     """
-    Classifies the type of triangle based on side lengths a, b, and c.
+    Classifies the type of triangle based on side lengths side1, side2, and side3.
 
     Parameters:
-        a (float): The length of side a.
-        b (float): The length of side b.
-        c (float): The length of side c.
+        side1 (float): The length of side 1.
+        side2 (float): The length of side 2.
+        side3 (float): The length of side 3.
     Returns:
         str: A string specifying the type of triangle.
     """
     
     # Ensure inputs are valid
-    if not (a + b > c and a + c > b and b + c > a):
+    if not (side1 + side2 > side3 and side1 + side3 > side2 and side2 + side3 > side1):
         return "Invalid triangle"
 
     # Equilateral Triangle
-    if a == b == c:
+    if side1 == side2 == side3:
         return "Equilateral"
-#1234
+    
     # Isosceles Triangle
-    elif a == b or b == c or a == c:
-        if round(a**2 + b**2, 5) == round(c**2, 5) or \
-           round(b**2 + c**2, 5) == round(a**2, 5) or \
-           round(a**2 + c**2, 5) == round(b**2, 5):
+    elif side1 == side2 or side2 == side3 or side1 == side3:
+        if round(side1**2 + side2**2, 5) == round(side3**2, 5) or \
+           round(side2**2 + side3**2, 5) == round(side1**2, 5) or \
+           round(side1**2 + side3**2, 5) == round(side2**2, 5):
             return "Isosceles and Right Triangle"
         return "Isosceles"
     
     # Scalene Triangle
     else:
-        if round(a**2 + b**2, 5) == round(c**2, 5) or \
-           round(b**2 + c**2, 5) == round(a**2, 5) or \
-           round(a**2 + c**2, 5) == round(b**2, 5):
+        if round(side1**2 + side2**2, 5) == round(side3**2, 5) or \
+           round(side2**2 + side3**2, 5) == round(side1**2, 5) or \
+           round(side1**2 + side3**2, 5) == round(side2**2, 5):
             return "Scalene and Right Triangle"
         return "Scalene"
 
@@ -40,16 +39,16 @@ def main():
     """
     Main function that takes user input and classifies the triangle.
     """
-    print("Enter the lengths of the three sides of the triangle:")
-    a = float(input("Length of side a: "))
-    b = float(input("Length of side b: "))
-    c = float(input("Length of side c: "))
+    print("Please enter the lengths of the three sides of your triangle:")
+    side1 = float(input("Length of side 1: "))
+    side2 = float(input("Length of side 2: "))
+    side3 = float(input("Length of side 3: "))
     
     # Call the classify_triangle function
-    result = classify_triangle(a, b, c)
+    triangle_type = classify_triangle(side1, side2, side3)
     
     # Print the result
-    print(f"The Triangle is: {result}")
+    print(f"The triangle is classified as: {triangle_type}")
 
 # Run the main function
 if __name__ == "__main__":
