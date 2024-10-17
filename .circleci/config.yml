@@ -1,7 +1,7 @@
 version: 2.1
 
-orbs: 
-    python: circleci/python@2.0.1
+orbs:
+  python: circleci/python@2.0.1
 
 jobs:
   build-and-test:
@@ -9,7 +9,7 @@ jobs:
       - image: cimg/python:3.10.2
     steps:
       - checkout
-      - run: 
+      - run:
           command: |
             pip install pytest
             pytest --junitxml=test-results/junit.xml TestTriangle.py
@@ -20,4 +20,3 @@ workflows:
   testing_triangles:
     jobs:
       - build-and-test
-      # new
