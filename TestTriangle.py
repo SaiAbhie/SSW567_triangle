@@ -2,65 +2,74 @@
 """
 Updated Jan 21, 2018
 The primary goal of this file is to demonstrate a simple unittest implementation
-
-@author: jrr
-@author: rk
 """
 
 import unittest
 from Triangle import classifyTriangle
 
 class TestTriangles(unittest.TestCase):
+    # Test right triangles
+    def testRightTriangleA(self):
+        self.assertEqual(classifyTriangle(3, 4, 5), 'Right', '3,4,5 should be a Right triangle')
+
+    def testRightTriangleB(self):
+        self.assertEqual(classifyTriangle(5, 12, 13), 'Right', '5,12,13 should be a Right triangle')
+
+    # Test equilateral triangle
+    def testEquilateralTriangles(self):
+        self.assertEqual(classifyTriangle(1, 1, 1), 'Equilateral', '1,1,1 should be Equilateral')
+
+    # Test scalene triangle
+    def testScaleneTriangle(self):
+        self.assertEqual(classifyTriangle(7, 8, 9), 'Scalene', '7,8,9 should be Scalene')
     
-    # Test for right triangles
-    def testRightTriangleA(self): 
-        self.assertEqual(classifyTriangle(3, 4, 5), 'Right', '3,4,5 is a Right triangle')
+    def testScaleneTriangleB(self):
+        self.assertEqual(classifyTriangle(10, 11, 12), 'Scalene', '10,11,12 should be Scalene')
 
-    def testRightTriangleB(self): 
-        self.assertEqual(classifyTriangle(5, 3, 4), 'Right', '5,3,4 is a Right triangle')
+    # Test isosceles triangle
+    def testIsoscelesTriangleA(self):
+        self.assertEqual(classifyTriangle(5, 5, 8), 'Isosceles', '5,5,8 should be Isosceles')
 
-    def testRightTriangleC(self):
-        self.assertEqual(classifyTriangle(6, 8, 10), 'Right', '6,8,10 is a Right triangle')
+    def testIsoscelesTriangleB(self):
+        self.assertEqual(classifyTriangle(5, 8, 5), 'Isosceles', '5,8,5 should be Isosceles')
 
-    # Test for equilateral triangles
-    def testEquilateralTriangles(self): 
-        self.assertEqual(classifyTriangle(1, 1, 1), 'Equilateral', '1,1,1 should be equilateral')
+    # Test invalid triangles (triangle inequality violation)
+    def testNotATriangleA(self):
+        self.assertEqual(classifyTriangle(1, 1, 3), 'NotATriangle', '1,1,3 is not a valid triangle')
+    
+    def testNotATriangleB(self):
+        self.assertEqual(classifyTriangle(10, 1, 1), 'NotATriangle', '10,1,1 is not a valid triangle')
 
-    # Test for isosceles triangles
-    def testIsoscelesTrianglesA(self):
-        self.assertEqual(classifyTriangle(5, 5, 8), 'Isosceles', '5,5,8 should be isosceles')
+    def testNotATriangleC(self):
+        self.assertEqual(classifyTriangle(1, 10, 1), 'NotATriangle', '1,10,1 is not a valid triangle')
 
-    def testIsoscelesTrianglesB(self):
-        self.assertEqual(classifyTriangle(5, 8, 5), 'Isosceles', '5,8,5 should be isosceles')
+    # Test invalid inputs (negative numbers)
+    def testInvalidInputNegative(self):
+        self.assertEqual(classifyTriangle(-1, 5, 5), 'InvalidInput', '-1,5,5 should be InvalidInput')
 
-    def testIsoscelesTrianglesC(self):
-        self.assertEqual(classifyTriangle(8, 5, 5), 'Isosceles', '8,5,5 should be isosceles')
+    # Test invalid inputs (sides greater than 200)
+    def testInvalidInputTooLarge(self):
+        self.assertEqual(classifyTriangle(201, 199, 199), 'InvalidInput', '201,199,199 should be InvalidInput')
 
-    # Test for scalene triangles
-    def testScaleneTriangles(self):
-        self.assertEqual(classifyTriangle(4, 5, 6), 'Scalene', '4,5,6 should be scalene')
+    # Test invalid inputs (non-integer values)
+    def testInvalidInputNonIntegerA(self):
+        self.assertEqual(classifyTriangle(3.5, 4, 5), 'InvalidInput', '3.5,4,5 should be InvalidInput')
 
-    # Test for invalid triangles
-    def testInvalidTriangleA(self):
-        self.assertEqual(classifyTriangle(0, 4, 5), 'InvalidInput', '0,4,5 should be invalid')
-
-    def testInvalidTriangleB(self):
-        self.assertEqual(classifyTriangle(-1, 4, 5), 'InvalidInput', '-1,4,5 should be invalid')
-
-    def testInvalidTriangleC(self):
-        self.assertEqual(classifyTriangle(1, 10, 12), 'NotATriangle', '1,10,12 is not a valid triangle')
-
-    def testInvalidTriangleD(self):
-        self.assertEqual(classifyTriangle(1, 2, 3), 'NotATriangle', '1,2,3 is not a valid triangle')
-
-    # Test for float inputs (invalid, because the function expects integers)
-    def testFloatInputs(self):
-        self.assertEqual(classifyTriangle(3.5, 4.5, 5.5), 'InvalidInput', '3.5,4.5,5.5 should be invalid')
-
-    # Test for string inputs (invalid)
-    def testStringInputs(self):
-        self.assertEqual(classifyTriangle('a', 'b', 'c'), 'InvalidInput', 'String inputs should be invalid')
+    def testInvalidInputNonIntegerB(self):
+        self.assertEqual(classifyTriangle('a', 5, 5), 'InvalidInput', 'Non-integer values should return InvalidInput')
 
 if __name__ == '__main__':
+    # Customize the test result display
+    class CustomTestRunner(unittest.TextTestRunner):
+        def run(self, test):
+            result = super().run(test)
+            if result.wasSuccessful():
+                print("\nAll tests passed successfully!")
+            else:
+                print("\nSome tests failed.")
+                for failure in result.failures:
+                    print(f"Test {failure[0]} failed: {failure[1]}")
+            return result
+    
     print('Running unit tests')
-    unittest.main()
+    unittest.main(testRunner=CustomTestRunner(verbosity=2))  
